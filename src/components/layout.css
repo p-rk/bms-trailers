@@ -658,6 +658,15 @@ h1 {
   width: calc(100% / 5);
   padding: 6px 5px 5px;
 }
+
+
+/* .card {
+  width: calc(100% / 5);
+  border: 2px solid orange;
+  margin: 8px;
+  float: left;
+} */
+
 .card .menu-content {
   margin: 0;
   padding: 0;
