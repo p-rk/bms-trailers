@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: '',
+    title: 'BookMyShow Trailers',
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -17,6 +17,6 @@ module.exports = {
       },
     },
     'gatsby-plugin-offline',
-    'gatsby-plugin-sass'
+    'gatsby-plugin-sass',
   ],
 }
