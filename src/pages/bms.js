@@ -1,28 +1,18 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import TrailerVideo from '../components/TrailerVideo'
-import { getMoviesList } from '../helpers'
+import { getMoviesList, debounce } from '../helpers'
 
 const data = require('../../data/list.json')
 const list = getMoviesList(data)
-
-const debounce = (callBack, delay) => {
-  let timerId = null
-  return () => {
-    if (timerId) {
-      clearTimeout(timerId)
-      timerId = null
-    }
-    timerId = setTimeout(callBack, delay)
-  }
-}
 
 class MoviesTrailers extends Component {
   constructor() {
     super()
     this.divRefs = {}
 
-    this.showInfo = (index, link) => this.renderInfo.bind(this, index, link)
+    this.showInfo = (index, link, key) =>
+      this.renderInfo.bind(this, index, link, key)
 
     this.getDivRef = index => {
       this.divRefs[index] = React.createRef()
@@ -30,17 +20,18 @@ class MoviesTrailers extends Component {
     }
     this.debouncedFn = debounce(this.resizeHandler.bind(this), 500)
   }
-
+  /* keyId for active state */
   state = {
     keyId: '',
   }
 
   componentDidMount() {
-    // should debounce the function call. Do not want to import lodash
+    /* should debounce the function call. improves performance */
     window.addEventListener('resize', this.debouncedFn)
   }
 
   componentWillUnmount() {
+    /* removing event listener */
     window.removeEventListener('resize', this.debouncedFn)
   }
 
@@ -51,51 +42,50 @@ class MoviesTrailers extends Component {
   }
 
   deleteInfoNode() {
-    // Delete any of the previous div
-    const divToDelete = document.querySelector('.info')
+    /* Delete any if previous div in the DOM */
+    const divToDelete = document.querySelector('.detail')
     if (divToDelete) {
       divToDelete.remove()
     }
   }
 
   createElement(index) {
-    const infoDiv = document.createElement('div')
-    infoDiv.classList = ['info']
-    infoDiv.id = index
-    return infoDiv
+    const detailDiv = document.createElement('div')
+    detailDiv.classList = 'detail'
+    detailDiv.id = index
+    return detailDiv
   }
 
-  renderInfo(index, link) {
+  renderInfo(index, link, key) {
     const videoId = link.split('?v=')[1].split('&')[0]
+    /* setState for active item */
+    this.setState({
+      keyId: key,
+    })
+
     if (list.length > 0) {
       this.deleteInfoNode()
 
       const prevItemY = this.divRefs[0].current.offsetTop
-      let lastNodeIndexOfEligibleRow = 0
+      let lastNodeIndex = 0
       for (let i = 0; i <= index; i++) {
         const divItem = this.divRefs[i]
         if (divItem.current.offsetTop !== prevItemY) {
-          lastNodeIndexOfEligibleRow = parseInt(index / i) * i
-
-          lastNodeIndexOfEligibleRow =
-            lastNodeIndexOfEligibleRow < 0 ? 0 : lastNodeIndexOfEligibleRow
+          lastNodeIndex = parseInt(index / i) * i
+          lastNodeIndex = lastNodeIndex < 0 ? 0 : lastNodeIndex
           break
         }
       }
 
-      const lastNodeOfEligibleRow = this.divRefs[lastNodeIndexOfEligibleRow]
-        .current
+      const lastNodeRow = this.divRefs[lastNodeIndex].current
 
-      const infoDiv = this.createElement(index)
-      // console.log(infoDiv)
-      lastNodeOfEligibleRow.parentNode.insertBefore(
-        infoDiv,
-        lastNodeOfEligibleRow
-      )
+      const detailDiv = this.createElement(index)
+      console.log(detailDiv.offsetTop)
+      lastNodeRow.parentNode.insertBefore(detailDiv, lastNodeRow)
+      /* after appending div to dom attaching Video Component */
+      ReactDOM.render(<TrailerVideo videoId={videoId} />, detailDiv)
 
-      ReactDOM.render(<TrailerVideo videoId={videoId} />, infoDiv)
-
-      setTimeout(() => window.scrollBy(0, infoDiv.offsetTop - window.scrollY))
+      setTimeout(() => window.scrollBy(0, detailDiv.offsetTop - window.scrollY))
       this.selectedIndex = index
     }
   }
@@ -107,7 +97,7 @@ class MoviesTrailers extends Component {
         {list.map((item, index) => (
           <div
             ref={this.getDivRef(index)}
-            onClick={this.showInfo(index, item.TrailerURL)}
+            onClick={this.showInfo(index, item.TrailerURL, item.EventGroup)}
             className="example card"
             key={item.EventGroup}
           >
@@ -131,15 +121,13 @@ class MoviesTrailers extends Component {
                 src={`https://in.bmscdn.com/events/moviecard/${
                   item.EventCode
                 }.jpg`}
-                alt="Movie title"
+                alt={item.EventName}
               />
               <div className="data">
                 <div className="content">
                   <span className="author">{item.EventLanguage}</span>
                   <div className="author">{item.EventGenre}</div>
-                  <h1 className="title">
-                    <a href="#">{item.EventName}</a>
-                  </h1>
+                  <h1 className="title">{item.EventName}</h1>
                 </div>
               </div>
             </div>

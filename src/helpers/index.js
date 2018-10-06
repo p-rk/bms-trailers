@@ -22,3 +22,14 @@ export const createChunks = data => {
     [[]]
   )
 }
+
+export const debounce = (callBack, delay) => {
+  let timerId = null
+  return () => {
+    if (timerId) {
+      clearTimeout(timerId)
+      timerId = null
+    }
+    timerId = setTimeout(callBack, delay)
+  }
+}
