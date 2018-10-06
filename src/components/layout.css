@@ -857,3 +857,10 @@ h1 {
 .noDecoration {
   text-decoration: none!important;
 }
+
+.info {
+  float: left;
+  position: relative;
+  width: 90%;
+  left: 5%;
+}

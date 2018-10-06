@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import TrailerVideo from '../components/TrailerVideo'
 import { getMoviesList } from '../helpers'
@@ -17,7 +17,7 @@ const debounce = (callBack, delay) => {
   }
 }
 
-class MoviesTrailers extends React.Component {
+class MoviesTrailers extends Component {
   constructor() {
     super()
     this.divRefs = {}
@@ -28,14 +28,10 @@ class MoviesTrailers extends React.Component {
       this.divRefs[index] = React.createRef()
       return this.divRefs[index]
     }
-
     this.debouncedFn = debounce(this.resizeHandler.bind(this), 500)
   }
 
   state = {
-    show: false,
-    videoId: '',
-    data: [],
     keyId: '',
   }
 
@@ -62,12 +58,19 @@ class MoviesTrailers extends React.Component {
     }
   }
 
+  createElement(index) {
+    const infoDiv = document.createElement('div')
+    infoDiv.classList = ['info']
+    infoDiv.id = index
+    return infoDiv
+  }
+
   renderInfo(index, link) {
     const videoId = link.split('?v=')[1].split('&')[0]
     if (list.length > 0) {
       this.deleteInfoNode()
 
-      let prevItemY = this.divRefs[0].current.offsetTop
+      const prevItemY = this.divRefs[0].current.offsetTop
       let lastNodeIndexOfEligibleRow = 0
       for (let i = 0; i <= index; i++) {
         const divItem = this.divRefs[i]
@@ -83,24 +86,18 @@ class MoviesTrailers extends React.Component {
       const lastNodeOfEligibleRow = this.divRefs[lastNodeIndexOfEligibleRow]
         .current
 
-      var infoDiv = this.createElement(index)
-      console.log(infoDiv)
+      const infoDiv = this.createElement(index)
+      // console.log(infoDiv)
       lastNodeOfEligibleRow.parentNode.insertBefore(
         infoDiv,
         lastNodeOfEligibleRow
       )
-      const divWrap = document.getElementById(index)
-      divWrap.scrollIntoView(true)
-      ReactDOM.render(<TrailerVideo videoId={videoId} />, divWrap)
+
+      ReactDOM.render(<TrailerVideo videoId={videoId} />, infoDiv)
+
+      setTimeout(() => window.scrollBy(0, infoDiv.offsetTop - window.scrollY))
       this.selectedIndex = index
     }
-  }
-
-  createElement(index) {
-    const infoDiv = document.createElement('div')
-    infoDiv.classList = ['info']
-    infoDiv.id = index
-    return infoDiv
   }
 
   render() {
