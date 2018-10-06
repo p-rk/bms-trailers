@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'gatsby'
 import TrailerVideo from '../TrailerVideo'
 import { sortData, createChunks } from '../../helpers'
 
@@ -20,11 +19,6 @@ class MovieCard extends React.Component {
       keyId,
     })
   }
-  componentWillMount() {
-    this.setState({
-      data: createChunks(this.props.data),
-    })
-  }
   componentDidUpdate() {
     if (window)
       window.scroll({
@@ -33,9 +27,14 @@ class MovieCard extends React.Component {
         behavior: 'smooth',
       })
   }
+  componentDidMount = () => {
+    this.setState({
+      data: createChunks(this.props.data),
+    })
+  }
+
   render() {
     const { show, data, videoId, keyId } = this.state
-    console.log(keyId)
     return (
       <div className="row">
         {show && <TrailerVideo videoId={videoId} />}
