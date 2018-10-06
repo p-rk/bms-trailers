@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Card from './Card'
 import TrailerVideo from '../TrailerVideo'
 import { sortData, createChunks } from '../../helpers'
 
-class MovieCard extends React.Component {
+class MovieCard extends Component {
   state = {
     show: false,
     videoId: '',

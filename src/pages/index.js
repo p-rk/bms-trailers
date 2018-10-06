@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import TrailerVideo from '../components/TrailerVideo'
 import Card from '../components/MovieCard/Card'
 import { getMoviesList, debounce } from '../helpers'
+import Layout from '../components/layout'
 
 const data = require('../../data/list.json')
 const list = getMoviesList(data)
@@ -57,7 +58,6 @@ class MoviesTrailer extends Component {
   }
 
   renderInfo(index, link, key) {
-    if (!link) return alert('No Trailer Link Found')
     const videoId = link.match(/v=(.*)/)[1].split('&')[0]
     /* setState for active item */
     this.setState({
@@ -81,7 +81,10 @@ class MoviesTrailer extends Component {
       const lastNodeRow = this.divRefs[lastNodeIndex].current
 
       const detailDiv = this.createElement(index)
-      console.log(detailDiv.offsetTop)
+      // console.log(detailDiv.offsetTop)
+      /* get Info */
+      const itemData = list.filter(info => info.EventGroup === key)
+      console.log(itemData)
       lastNodeRow.parentNode.insertBefore(detailDiv, lastNodeRow)
       /* after appending div to dom attaching Video Component */
       ReactDOM.render(<TrailerVideo videoId={videoId} />, detailDiv)
@@ -94,19 +97,21 @@ class MoviesTrailer extends Component {
   render() {
     const { keyId } = this.state
     return (
-      <div className="list">
-        {list.map((item, index) => (
-          <div
-            ref={this.getDivRef(index)}
-            onClick={this.showInfo(index, item.TrailerURL, item.EventGroup)}
-            className="example card"
-            key={item.EventGroup}
-          >
-            <Card item={item} keyId={keyId} />
-            <br />
-          </div>
-        ))}
-      </div>
+      <Layout>
+        <div className="list">
+          {list.map((item, index) => (
+            <div
+              ref={this.getDivRef(index)}
+              onClick={this.showInfo(index, item.TrailerURL, item.EventGroup)}
+              className="example card"
+              key={item.EventGroup}
+            >
+              <Card item={item} keyId={keyId} />
+              <br />
+            </div>
+          ))}
+        </div>
+      </Layout>
     )
   }
 }
