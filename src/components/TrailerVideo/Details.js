@@ -13,11 +13,17 @@ export default ({ data }) => (
     </div>
     <div className="dates-and-votes">
       <div className="block">
-        <h4>{data.wtsPerc} %</h4>
+        <h4>
+          <i className="fa fa-thumbs-o-up fa-1x" aria-hidden="true" />
+          {` ${data.wtsPerc}%`}
+        </h4>
         <p>{Number(data.wtsCount) + Number(data.dwtsCount)} votes</p>
       </div>
       <div className="block">
-        <h4>{data.ShowDate.split(',')[0]}</h4>
+        <h4>
+          <i className="fa fa-calendar fa-1x" aria-hidden="true" />
+          {` ${data.ShowDate.split(',')[0]}`}
+        </h4>
         <p>{data.ShowDate.split(',')[1]}</p>
       </div>
     </div>
@@ -27,14 +33,17 @@ export default ({ data }) => (
     </div>
     <div className="user-reviews">
       <div className="block green">
+        <i className="fa fa-thumbs-o-up fa-2x" aria-hidden="true" />
         <h4>WILL WATCH</h4>
         <p>({data.wtsCount})</p>
       </div>
       <div className="block yellow">
+        <i className="fa fa-question fa-2x" aria-hidden="true" />
         <h4>MAYBE</h4>
         <p>({data.maybeCount})</p>
       </div>
       <div className="block red">
+        <i className="fa fa-thumbs-o-down fa-2x" aria-hidden="true" />
         <h4>WONT'S WATCH</h4>
         <p>({data.dwtsCount})</p>
       </div>
