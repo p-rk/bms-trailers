@@ -36,15 +36,13 @@ export const debounce = (callBack, delay) => {
 
 export const formatVotes = votes => {
   const amt = votes.toString()
-  const afterPoint =
-    amt.indexOf('.') > 0 ? amt.substring(amt.indexOf('.'), amt.length) : ''
-  const newAmt = Math.floor(amt).toString()
-  const lastThree = newAmt.substring(newAmt.length - 3)
-  const otherNumbers = newAmt.substring(0, newAmt.length - 3)
+  const newVotes = Math.floor(amt).toString()
+  const lastThree = newVotes.substring(newVotes.length - 3)
+  const otherNumbers = newVotes.substring(0, newVotes.length - 3)
   const newlastThree = otherNumbers !== '' ? `,${lastThree}` : lastThree
-  const res =
-    otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') +
-    newlastThree +
-    afterPoint
+  const res = `${otherNumbers.replace(
+    /\B(?=(\d{2})+(?!\d))/g,
+    ','
+  )}${newlastThree}`
   return res
 }
