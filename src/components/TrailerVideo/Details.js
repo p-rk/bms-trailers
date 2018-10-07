@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatVotes } from '../../helpers'
 
 export default ({ data }) => (
   <div className="videoDetails">
@@ -17,7 +18,9 @@ export default ({ data }) => (
           <i className="fa fa-thumbs-o-up fa-1x" aria-hidden="true" />
           {` ${data.wtsPerc}%`}
         </h4>
-        <p>{Number(data.wtsCount) + Number(data.dwtsCount)} votes</p>
+        <p>
+          {formatVotes(Number(data.wtsCount) + Number(data.dwtsCount))} votes
+        </p>
       </div>
       <div className="block">
         <h4>
@@ -35,17 +38,17 @@ export default ({ data }) => (
       <div className="block green">
         <i className="fa fa-thumbs-o-up fa-2x" aria-hidden="true" />
         <h4>WILL WATCH</h4>
-        <p>({data.wtsCount})</p>
+        <p>({formatVotes(data.wtsCount)})</p>
       </div>
       <div className="block yellow">
         <i className="fa fa-question fa-2x" aria-hidden="true" />
         <h4>MAYBE</h4>
-        <p>({data.maybeCount})</p>
+        <p>({formatVotes(data.maybeCount)})</p>
       </div>
       <div className="block red">
         <i className="fa fa-thumbs-o-down fa-2x" aria-hidden="true" />
         <h4>WONT'S WATCH</h4>
-        <p>({data.dwtsCount})</p>
+        <p>({formatVotes(data.dwtsCount)})</p>
       </div>
     </div>
   </div>
