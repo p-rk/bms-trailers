@@ -58,39 +58,45 @@ class MoviesTrailer extends Component {
   }
 
   renderInfo(index, link, key) {
-    const videoId = link.match(/v=(.*)/)[1].split('&')[0]
-    /* setState for active item */
-    this.setState({
-      keyId: key,
-    })
+    if (link && key) {
+      const videoId = link.match(/v=(.*)/)[1].split('&')[0]
+      /* setState for active item */
+      this.setState({
+        keyId: key,
+      })
 
-    if (list.length > 0) {
-      this.deleteInfoNode()
+      if (list.length > 0) {
+        this.deleteInfoNode()
 
-      const prevItemY = this.divRefs[0].current.offsetTop
-      let lastNodeIndex = 0
-      for (let i = 0; i <= index; i++) {
-        const divItem = this.divRefs[i]
-        if (divItem.current.offsetTop !== prevItemY) {
-          lastNodeIndex = parseInt(index / i) * i
-          lastNodeIndex = lastNodeIndex < 0 ? 0 : lastNodeIndex
-          break
+        const prevItemY = this.divRefs[0].current.offsetTop
+        let lastNodeIndex = 0
+        for (let i = 0; i <= index; i++) {
+          const divItem = this.divRefs[i]
+          if (divItem.current.offsetTop !== prevItemY) {
+            lastNodeIndex = parseInt(index / i) * i
+            lastNodeIndex = lastNodeIndex < 0 ? 0 : lastNodeIndex
+            break
+          }
         }
+
+        const lastNodeRow = this.divRefs[lastNodeIndex].current
+
+        const detailDiv = this.createElement(index)
+        // console.log(detailDiv.offsetTop)
+        /* get Info */
+        const [itemData] = list.filter(info => info.EventGroup === key)
+        lastNodeRow.parentNode.insertBefore(detailDiv, lastNodeRow)
+        /* after appending div to dom attaching Video Component */
+        ReactDOM.render(
+          <TrailerVideo videoId={videoId} itemData={itemData} />,
+          detailDiv
+        )
+
+        setTimeout(() =>
+          window.scrollBy(0, detailDiv.offsetTop - window.scrollY)
+        )
+        this.selectedIndex = index
       }
-
-      const lastNodeRow = this.divRefs[lastNodeIndex].current
-
-      const detailDiv = this.createElement(index)
-      // console.log(detailDiv.offsetTop)
-      /* get Info */
-      const itemData = list.filter(info => info.EventGroup === key)
-      console.log(itemData)
-      lastNodeRow.parentNode.insertBefore(detailDiv, lastNodeRow)
-      /* after appending div to dom attaching Video Component */
-      ReactDOM.render(<TrailerVideo videoId={videoId} />, detailDiv)
-
-      setTimeout(() => window.scrollBy(0, detailDiv.offsetTop - window.scrollY))
-      this.selectedIndex = index
     }
   }
 

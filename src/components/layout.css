@@ -659,13 +659,16 @@ h1 {
   padding: 6px 5px 5px;
 }
 
-
-/* .card {
-  width: calc(100% / 5);
-  border: 2px solid orange;
-  margin: 8px;
-  float: left;
-} */
+@media (max-width: 991px) {
+  .card {
+    width: calc(100% / 2);
+  }
+}
+@media (max-width: 767px) {
+  .card {
+    width: 100%;
+  }
+}
 
 .card .menu-content {
   margin: 0;
@@ -696,6 +699,7 @@ h1 {
           transform: translate(-50%, 0);
 }
 .card .wrapper {
+  text-align: center;
   background-color: #fff;
   border: solid 3px transparent;
   /* min-height: 540px; */
@@ -704,18 +708,19 @@ h1 {
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.2);
 }
 .card .wrapper:hover .data {
-  -webkit-transform: translateY(0);
-          transform: translateY(0);
+  /* -webkit-transform: translateY(0);
+          transform: translateY(0); */
+  bottom: 0;
 }
 .card .data {
   position: absolute;
-  bottom: 0;
+  bottom: -100%;
   width: 100%;
-  -webkit-transform: translateY(calc(70px + 1em));
-          transform: translateY(calc(70px + 1em));
+  /* -webkit-transform: translateY(calc(70px + 1em));
+          transform: translateY(calc(70px + 1em)); */
   transition: -webkit-transform 0.3s;
-  transition: transform 0.3s;
-  transition: transform 0.3s, -webkit-transform 0.3s;
+  transition: bottom 0.3s;
+  text-align: left;
 }
 .card .data .content {
   padding: 1em;
@@ -727,6 +732,7 @@ h1 {
 }
 .card .title {
   margin-top: 10px;
+  margin-bottom: 0;
 }
 .card .text {
   height: 70px;
@@ -737,9 +743,6 @@ h1 {
   border: solid 3px orangered;
 }
 
-/* .example .wrapper {
-  background: url(https://images.unsplash.com/photo-1496979551903-46e46589a88b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cda12b505afa1beb06e49d89014cbd65&auto=format&fit=crop&w=634&q=80) 20% 1%/cover no-repeat;
-} */
 .example .date {
   position: absolute;
   top: 0;
@@ -840,7 +843,7 @@ h1 {
   float: left;
   width: 50%;
   padding: 10px;
-  height: 300px; /* Should be removed. Only for demonstration */
+  height: 300px;
 }
 
 /* Clear floats after the columns */
@@ -848,10 +851,6 @@ h1 {
   content: "";
   display: table;
   clear: both;
-}
-
-.video {
-  text-align: center;
 }
 
 .noDecoration {
@@ -863,4 +862,93 @@ h1 {
   position: relative;
   width: 90%;
   left: 5%;
+}
+.videoWrapper {
+  width: 65%;
+  float: left;
+  padding-right: 20px;
+}
+.videoDetails {
+  width: 35%;
+  float: left;
+  background: rgba(0, 0, 0, 0.40);
+  color: #FFF;
+  padding: 20px 20px;
+  min-height: 390px;
+}
+.user-reviews {
+  /* background: #000; */
+  color: #FFF;
+  margin-top: 20px;
+  display: flex;
+}
+.videoDetails h4 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+.videoDetails h6 {
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 15px;
+}
+.video label {
+  border: 1px solid rgba(255, 255, 255, 0.66);
+  border-radius: 30px;
+  padding: 3px 12px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.66);
+  margin-right: 4px;
+}
+.dates-and-votes {
+  margin-top: 20px;
+  display: flex;
+}
+.dates-and-votes .block h4 {
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+.dates-and-votes .block {
+  width: 25%;
+  float: left;
+}
+.dates-and-votes .block p {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+.video-desc {
+  clear: both;
+}
+.video-desc p {
+  margin-bottom: 0;
+  font-size: 14px;
+  margin-top: 5px;
+}
+.video-desc button {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: #4aa458;
+  padding: 0;
+}
+.user-reviews .block {
+  width: 33.33%;
+  text-align: center;
+  float: left;
+}
+.user-reviews .block h4 {
+  margin-bottom: 2px;
+  font-size: 12px;
+}
+.user-reviews .block p {
+  margin-bottom: 0;
+  font-size: 12px;
+}
+.user-reviews .block.green {
+  color: #4aa458;
+}
+.user-reviews .block.yellow {
+  color: #e1973a;
+}
+.user-reviews .block.red {
+  color: #b24342;
 }
